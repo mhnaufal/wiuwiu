@@ -4,25 +4,35 @@ pub struct Product {
 }
 
 pub struct Cart {
-    pub(crate) Products: Vec<Product>,
+    pub(crate) products: Vec<Product>,
 }
 
 pub trait ICart {
     fn tambah_produk(&mut self, i_name: String, i_quantity: u64);
-    fn tampilkan_cart(&mut self);
+    fn hapus_produk(&mut self, i_name: String);
+    fn tampilkan_cart(&mut self) -> String;
 }
 
 impl ICart for Cart {
     fn tambah_produk(&mut self, i_name: String, i_quantity: u64) {
         let new_product: Product = Product { name: i_name, quantity: i_quantity };
 
-        self.Products.push(new_product);
+        self.products.push(new_product);
     }
 
-    fn tampilkan_cart(&mut self) {
-        for product in &self.Products { // iterate over a copy of self.Products
+    fn hapus_produk(&mut self, i_name: String) {
+        self.products.remove(i_name.parse().unwrap());
+    }
+
+    fn tampilkan_cart(&mut self) -> String {
+        for product in &self.products { // iterate over a copy of self.products
             println!("{} ({})", product.name, product.quantity);
-            format!("{} ({})", product.name, product.quantity);
-        }
+        };
+
+        "List of products".to_string()
+
+        // self.products.iter().map(ToString::to_string).collect()
+
+        // format!("{} ({})", product.name, product.quantity)
     }
 }
